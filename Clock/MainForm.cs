@@ -15,6 +15,7 @@ namespace Clock
         public MainForm()
         {
             InitializeComponent();
+            SetVisibility(false);
         }
 
         private void timer_Tick(object sender, EventArgs e)         //Обработчик событий
@@ -31,27 +32,49 @@ namespace Clock
                 labelTime.Text += $"\n{DateTime.Now.DayOfWeek}";
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) => tsmiShowDate.Checked = checkBoxShowDate.Checked;
         void SetVisibility(bool visible)
         {
             checkBoxShowDate.Visible = visible;
             checkBoxShowWeekday.Visible = visible;
             buttonHideControls.Visible = visible;
-            this.FormBorderStyle = visible? FormBorderStyle.FixedToolWindow : FormBorderStyle.None;
-            this.TransparencyKey = visible? Color.Empty : this.BackColor;
+            this.FormBorderStyle = visible ? FormBorderStyle.FixedToolWindow : FormBorderStyle.None;
+            this.TransparencyKey = visible ? Color.Empty : this.BackColor;
             this.ShowInTaskbar = visible;
         }
-        private void buttonHideControls_Click(object sender, EventArgs e)
+        private void buttonHideControls_Click(object sender, EventArgs e) =>
+            SetVisibility(tsmiShowControls.Checked = false);
+
+        private void labelTime_DoubleClick(object sender, EventArgs e) =>
+            SetVisibility(tsmiShowControls.Checked = true);
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            SetVisibility(false);
+            this.TopMost = true;
+            this.TopMost = false;
         }
 
-        private void labelTime_DoubleClick(object sender, EventArgs e)
+        private void tsmiQuit_Click(object sender, EventArgs e) => this.Close();
+
+        private void tsmiTopmost_Click(object sender, EventArgs e) =>
+            this.TopMost = tsmiTopmost.Checked;
+
+        private void tsmiShowDate_Click(object sender, EventArgs e) =>
+            checkBoxShowDate.Checked = tsmiShowDate.Checked;
+
+        private void checkBoxShowDate_CheckedChanged(object sender,
+            EventArgs e) => tsmiShowDate.Checked = checkBoxShowDate.Checked;
+
+        private void tsmiShowWeekday_Click(object sender, EventArgs e) =>
+            checkBoxShowWeekday.Checked = tsmiShowWeekday.Checked;
+
+        private void checkBoxShowWeekday_CheckedChanged(object sender, EventArgs e)
         {
-            SetVisibility(true);
+            tsmiShowWeekday.Checked = (sender as CheckBox).Checked;     // as - оператор преобразования типов
+            //tsmiShowWeekday.Checked = ((CheckBox)sender).Checked;
         }
+
+        private void tsmiShowControls_Click(object sender, EventArgs e) =>
+            SetVisibility(tsmiShowControls.Checked);
     }
 }
