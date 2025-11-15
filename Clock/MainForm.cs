@@ -17,11 +17,6 @@ namespace Clock
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void timer_Tick(object sender, EventArgs e)         //Обработчик событий
         {
             //labelTime.Text = DateTime.Now.ToString("HH:mm:ss"); //24-часовой формат
@@ -40,11 +35,23 @@ namespace Clock
         {
 
         }
-
+        void SetVisibility(bool visible)
+        {
+            checkBoxShowDate.Visible = visible;
+            checkBoxShowWeekday.Visible = visible;
+            buttonHideControls.Visible = visible;
+            this.FormBorderStyle = visible? FormBorderStyle.FixedToolWindow : FormBorderStyle.None;
+            this.TransparencyKey = visible? Color.Empty : this.BackColor;
+            this.ShowInTaskbar = visible;
+        }
         private void buttonHideControls_Click(object sender, EventArgs e)
         {
-            checkBoxShowDate.Visible = false;
-            checkBoxShowWeekday.Visible = false;
+            SetVisibility(false);
+        }
+
+        private void labelTime_DoubleClick(object sender, EventArgs e)
+        {
+            SetVisibility(true);
         }
     }
 }
