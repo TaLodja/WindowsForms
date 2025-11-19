@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace Clock
 {
@@ -16,6 +17,7 @@ namespace Clock
         {
             InitializeComponent();
             SetVisibility(false);
+            tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
 
         private void timer_Tick(object sender, EventArgs e)         //Обработчик событий
@@ -98,6 +100,25 @@ namespace Clock
         {
             this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Width-8, 0);
             this.labelTime.Size = new Size(this.Width-8, this.labelTime.Height);
+        }
+
+        private void tsmiChooseFont_Click(object sender, EventArgs e)
+        {
+            fontDialog.ShowDialog();
+        }
+
+        private RegistryKey regKey()
+        { 
+            return Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        }
+        private void tsmiAutostart_Click(object sender, EventArgs e)
+        {
+            if (tsmiAutostart.Checked)
+            { 
+            regKey().SetValue("Clock", Application.ExecutablePath.ToString());
+                MessageBox.Show("Ключ сохранен", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else regKey().DeleteValue("Clock", false);
         }
     }
 }

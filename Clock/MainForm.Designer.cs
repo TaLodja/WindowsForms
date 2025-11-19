@@ -52,6 +52,7 @@
             this.buttonHideControls = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.colorDialog = new System.Windows.Forms.ColorDialog();
+            this.fontDialog = new System.Windows.Forms.FontDialog();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +87,7 @@
             this.toolStripSeparator4,
             this.tsmiQuit});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 204);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 226);
             // 
             // tsmiTopmost
             // 
@@ -135,6 +136,7 @@
             this.tsmiChooseFont.Name = "tsmiChooseFont";
             this.tsmiChooseFont.Size = new System.Drawing.Size(204, 22);
             this.tsmiChooseFont.Text = "Choose font";
+            this.tsmiChooseFont.Click += new System.EventHandler(this.tsmiChooseFont_Click);
             // 
             // tsmiColors
             // 
@@ -166,9 +168,11 @@
             // 
             // tsmiAutostart
             // 
+            this.tsmiAutostart.CheckOnClick = true;
             this.tsmiAutostart.Name = "tsmiAutostart";
             this.tsmiAutostart.Size = new System.Drawing.Size(204, 22);
             this.tsmiAutostart.Text = "Run on Windows startup";
+            this.tsmiAutostart.Click += new System.EventHandler(this.tsmiAutostart_Click);
             // 
             // toolStripSeparator4
             // 
@@ -230,6 +234,10 @@
             this.notifyIcon.Visible = true;
             this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
             // 
+            // fontDialog
+            // 
+            this.fontDialog.ShowEffects = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -274,6 +282,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiAutostart;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ColorDialog colorDialog;
+        private System.Windows.Forms.FontDialog fontDialog;
     }
 }
 
