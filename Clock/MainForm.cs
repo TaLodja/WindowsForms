@@ -42,6 +42,11 @@ namespace Clock
             this.TransparencyKey = visible ? Color.Empty : this.BackColor;
             this.ShowInTaskbar = visible;
         }
+        //void ChooseColor(object sender)
+        //{
+        //    colorDialog.ShowDialog();
+        //    ((sender = tsmiForegroundColor) ? labelTime.ForeColor : labelTime.BackColor) = colorDialog.Color;
+        //}
         private void buttonHideControls_Click(object sender, EventArgs e) =>
             SetVisibility(tsmiShowControls.Checked = false);
 
@@ -62,8 +67,8 @@ namespace Clock
         private void tsmiShowDate_Click(object sender, EventArgs e) =>
             checkBoxShowDate.Checked = tsmiShowDate.Checked;
 
-        private void checkBoxShowDate_CheckedChanged(object sender,
-            EventArgs e) => tsmiShowDate.Checked = checkBoxShowDate.Checked;
+        private void checkBoxShowDate_CheckedChanged(object sender, EventArgs e) => 
+            tsmiShowDate.Checked = checkBoxShowDate.Checked;
 
         private void tsmiShowWeekday_Click(object sender, EventArgs e) =>
             checkBoxShowWeekday.Checked = tsmiShowWeekday.Checked;
@@ -76,5 +81,23 @@ namespace Clock
 
         private void tsmiShowControls_Click(object sender, EventArgs e) =>
             SetVisibility(tsmiShowControls.Checked);
+
+        private void tsmiForegroundColor_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            labelTime.ForeColor = colorDialog.Color;
+        }
+
+        private void tsmiBackgroundColor_Click(object sender, EventArgs e)
+        {
+            colorDialog.ShowDialog();
+            labelTime.BackColor = colorDialog.Color;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Width-8, 0);
+            this.labelTime.Size = new Size(this.Width-8, this.labelTime.Height);
+        }
     }
 }
