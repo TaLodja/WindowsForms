@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing.Text;
+using Microsoft.Win32;
 
 namespace Clock
 {
@@ -30,6 +31,7 @@ namespace Clock
                     Screen.PrimaryScreen.Bounds.Width - this.labelTime.Width - 150,
                     50
                 );
+            tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
 
         private void timer_Tick(object sender, EventArgs e)         //Обработчик событий
@@ -116,6 +118,18 @@ namespace Clock
         {
             bool console = (sender as ToolStripMenuItem).Checked ? AllocConsole() : FreeConsole();
         }
-
+        private RegistryKey regKey()
+        {
+            return Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        }
+        private void tsmiAutostart_Click(object sender, EventArgs e)
+        {
+            if (tsmiAutostart.Checked)
+            {
+                regKey().SetValue("Clock", Application.ExecutablePath.ToString());
+                MessageBox.Show("Ключ сохранен", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else regKey().DeleteValue("Clock", false);
+        }
     }
 }

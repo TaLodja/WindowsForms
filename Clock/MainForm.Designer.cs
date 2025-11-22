@@ -85,7 +85,7 @@
             this.toolStripSeparator4,
             this.tsmiQuit});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 226);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 248);
             // 
             // tsmiTopmost
             // 
@@ -174,6 +174,7 @@
             // 
             // tsmiAutostart
             // 
+            this.tsmiAutostart.CheckOnClick = true;
             this.tsmiAutostart.Name = "tsmiAutostart";
             this.tsmiAutostart.Size = new System.Drawing.Size(204, 22);
             this.tsmiAutostart.Text = "Run on Windows startup";
