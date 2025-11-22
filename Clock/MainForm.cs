@@ -19,7 +19,7 @@ namespace Clock
         {
             InitializeComponent();
             LoadSettings();
-            SetVisibility(false);
+            //SetVisibility(false);
             tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
 

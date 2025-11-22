@@ -247,6 +247,7 @@
             this.Controls.Add(this.checkBoxShowWeekday);
             this.Controls.Add(this.checkBoxShowDate);
             this.Controls.Add(this.labelTime);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
