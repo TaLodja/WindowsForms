@@ -84,6 +84,7 @@ namespace Clock
             //labelTime.Font = new Font(fontName, fontSize);
             checkBoxShowDate.Checked = tsmiShowDate.Checked;
             checkBoxShowWeekday.Checked = tsmiShowWeekday.Checked;
+            this.TopMost = tsmiTopmost.Checked;
             SetVisibility(tsmiShowControls.Checked);
         }
         private void buttonHideControls_Click(object sender, EventArgs e) =>
