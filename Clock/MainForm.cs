@@ -1,8 +1,10 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace Clock
         public MainForm()
         {
             InitializeComponent();
+            LoadSettings();
             SetVisibility(false);
             tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
@@ -44,11 +47,45 @@ namespace Clock
             this.TransparencyKey = visible ? Color.Empty : this.BackColor;
             this.ShowInTaskbar = visible;
         }
-        //void ChooseColor(object sender)
-        //{
-        //    colorDialog.ShowDialog();
-        //    ((sender = tsmiForegroundColor) ? labelTime.ForeColor : labelTime.BackColor) = colorDialog.Color;
-        //}
+        void SaveSettingsApp()
+        {
+            string filePath = @"C:\Users\Владелец\source\repos\WindowsForms\Clock\Settings.ini";
+            StreamWriter sw = new StreamWriter(filePath);
+            sw.WriteLine($"{tsmiTopmost.Checked}");
+            sw.WriteLine($"{tsmiShowDate.Checked}");
+            sw.WriteLine($"{tsmiShowWeekday.Checked}");
+            sw.WriteLine($"{tsmiShowControls.Checked}");
+            //sw.WriteLine($"{labelTime.Font.Name}");
+            //sw.WriteLine($"{labelTime.Font.Size}");
+            sw.WriteLine($"{labelTime.ForeColor.ToArgb()}");
+            sw.WriteLine($"{labelTime.BackColor.ToArgb()}");
+            sw.WriteLine($"{tsmiAutostart.Checked}");
+            sw.WriteLine($"{this.Location.X}");
+            sw.WriteLine($"{this.Location.Y}");
+            sw.Close();
+        }
+        void LoadSettings()
+        {
+            string filePath = @"C:\Users\Владелец\source\repos\WindowsForms\Clock\Settings.ini";
+            StreamReader sr = new StreamReader(filePath);
+            tsmiTopmost.Checked = bool.Parse( sr.ReadLine() );
+            tsmiShowDate.Checked = bool.Parse( sr.ReadLine() );
+            tsmiShowWeekday.Checked = bool.Parse( sr.ReadLine() );
+            tsmiShowControls.Checked = bool.Parse( sr.ReadLine() );
+            //string fontName = sr.ReadLine();
+            //double fontSize = Convert.ToDouble(sr.ReadLine());
+            labelTime.ForeColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+            labelTime.BackColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+            tsmiAutostart.Checked = bool.Parse(sr.ReadLine());
+            int x = Convert.ToInt32(sr.ReadLine());
+            int y = Convert.ToInt32(sr.ReadLine());
+            sr.Close();
+            //this.Location = new Point(x, y);
+            //labelTime.Font = new Font(fontName, fontSize);
+            checkBoxShowDate.Checked = tsmiShowDate.Checked;
+            checkBoxShowWeekday.Checked = tsmiShowWeekday.Checked;
+            SetVisibility(tsmiShowControls.Checked);
+        }
         private void buttonHideControls_Click(object sender, EventArgs e) =>
             SetVisibility(tsmiShowControls.Checked = false);
 
@@ -61,7 +98,11 @@ namespace Clock
             this.TopMost = false;
         }
 
-        private void tsmiQuit_Click(object sender, EventArgs e) => this.Close();
+        private void tsmiQuit_Click(object sender, EventArgs e)
+        {
+            SaveSettingsApp();
+            this.Close();
+        }
 
         private void tsmiTopmost_Click(object sender, EventArgs e) =>
             this.TopMost = tsmiTopmost.Checked;
@@ -69,7 +110,7 @@ namespace Clock
         private void tsmiShowDate_Click(object sender, EventArgs e) =>
             checkBoxShowDate.Checked = tsmiShowDate.Checked;
 
-        private void checkBoxShowDate_CheckedChanged(object sender, EventArgs e) => 
+        private void checkBoxShowDate_CheckedChanged(object sender, EventArgs e) =>
             tsmiShowDate.Checked = checkBoxShowDate.Checked;
 
         private void tsmiShowWeekday_Click(object sender, EventArgs e) =>
@@ -98,8 +139,7 @@ namespace Clock
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Width-8, 0);
-            this.labelTime.Size = new Size(this.Width-8, this.labelTime.Height);
+            this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Width - 8, 0);
         }
 
         private void tsmiChooseFont_Click(object sender, EventArgs e)
@@ -108,14 +148,14 @@ namespace Clock
         }
 
         private RegistryKey regKey()
-        { 
+        {
             return Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         }
         private void tsmiAutostart_Click(object sender, EventArgs e)
         {
             if (tsmiAutostart.Checked)
-            { 
-            regKey().SetValue("Clock", Application.ExecutablePath.ToString());
+            {
+                regKey().SetValue("Clock", Application.ExecutablePath.ToString());
                 MessageBox.Show("Ключ сохранен", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else regKey().DeleteValue("Clock", false);
