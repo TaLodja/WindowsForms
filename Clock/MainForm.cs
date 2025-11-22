@@ -18,7 +18,6 @@ namespace Clock
         public MainForm()
         {
             InitializeComponent();
-            LoadSettings();
             //SetVisibility(false);
             tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
@@ -141,6 +140,7 @@ namespace Clock
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Location = new Point(Screen.PrimaryScreen.Bounds.Right - this.Width - 8, 0);
+            LoadSettings();
         }
 
         private void tsmiChooseFont_Click(object sender, EventArgs e)
