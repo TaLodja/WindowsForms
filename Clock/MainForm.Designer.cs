@@ -85,7 +85,7 @@
             this.toolStripSeparator4,
             this.tsmiQuit});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 248);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 226);
             // 
             // tsmiTopmost
             // 

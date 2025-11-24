@@ -22,10 +22,11 @@ namespace Clock
         public MainForm()
         {
             InitializeComponent();
-            SetVisibility(false);
+            //SetVisibility(false);
             backgroundDialog = new ColorDialog();
             foregroundDialog = new ColorDialog();
             fontDialog = new ChooseFont();
+            LoadSettingsApp();
             this.Location = new Point
                 (
                     Screen.PrimaryScreen.Bounds.Width - this.labelTime.Width - 150,
@@ -58,6 +59,48 @@ namespace Clock
             this.TransparencyKey = visible ? Color.Empty : this.BackColor;
             this.ShowInTaskbar = visible;
         }
+        void SaveSettingsApp()
+        {
+            string pathApp = $"{Application.ExecutablePath}\\..\\..\\..\\Settings.ini";
+            StreamWriter sw = new StreamWriter(pathApp);
+            sw.WriteLine($"{tsmiTopmost.Checked}");
+            sw.WriteLine($"{tsmiShowDate.Checked}");
+            sw.WriteLine($"{tsmiShowWeekday.Checked}");
+            sw.WriteLine($"{tsmiShowControls.Checked}");
+            sw.WriteLine($"{tsmiShowConsole.Checked}");
+            sw.WriteLine($"{fontDialog.FontFileName}");
+            sw.WriteLine($"{(int)labelTime.Font.Size}");
+            sw.WriteLine($"{labelTime.ForeColor.ToArgb()}");
+            sw.WriteLine($"{labelTime.BackColor.ToArgb()}");
+            sw.WriteLine($"{tsmiAutostart.Checked}");
+            sw.Close();
+        }
+        void LoadSettingsApp()
+        {
+            string pathApp = $"{Application.ExecutablePath}\\..\\..\\..\\Settings.ini";
+            if (new FileInfo(pathApp).Length != 0)
+            {
+                StreamReader sr = new StreamReader(pathApp);
+                tsmiTopmost.Checked = bool.Parse(sr.ReadLine());
+                tsmiShowDate.Checked = bool.Parse(sr.ReadLine());
+                tsmiShowWeekday.Checked = bool.Parse(sr.ReadLine());
+                tsmiShowControls.Checked = bool.Parse(sr.ReadLine());
+                tsmiShowConsole.Checked = bool.Parse(sr.ReadLine());
+                string fontName = sr.ReadLine();
+                int fontSize = Convert.ToInt32(sr.ReadLine());
+                labelTime.ForeColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+                labelTime.BackColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+                tsmiAutostart.Checked = bool.Parse(sr.ReadLine());
+                sr.Close();
+                checkBoxShowDate.Checked = tsmiShowDate.Checked;
+                checkBoxShowWeekday.Checked = tsmiShowWeekday.Checked;
+                this.TopMost = tsmiTopmost.Checked;
+                SetVisibility(tsmiShowControls.Checked);
+                fontDialog = new ChooseFont(fontName, fontSize);
+                labelTime.Font = fontDialog.Font;
+            }
+            else return;
+        }
         private void buttonHideControls_Click(object sender, EventArgs e) =>
             SetVisibility(tsmiShowControls.Checked = false);
 
@@ -70,7 +113,11 @@ namespace Clock
             this.TopMost = false;
         }
 
-        private void tsmiQuit_Click(object sender, EventArgs e) => this.Close();
+        private void tsmiQuit_Click(object sender, EventArgs e)
+        {
+            SaveSettingsApp();
+            this.Close();
+        }
 
         private void tsmiTopmost_Click(object sender, EventArgs e) =>
             this.TopMost = tsmiTopmost.Checked;

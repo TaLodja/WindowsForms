@@ -9,18 +9,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Clock
 {
     public partial class ChooseFont : Form
     {
-        new public Font Font {  get; set; }
+        new public Font Font { get; set; }
+        public string FontFileName { get; set; }
         public ChooseFont()
         {
             InitializeComponent();
             LoadFonts();
             comboBoxFont.SelectedIndex = 0;
             //numericUpDownFontSize.Value = 32;
+        }
+        public ChooseFont(string fontName, int fontSize):this()
+        {
+            comboBoxFont.SelectedIndex = comboBoxFont.Items.IndexOf(fontName);
+            numericUpDownFontSize.Value = fontSize;
+            Font = labelExample.Font;
+            FontFileName = fontName;
         }
         void LoadFonts()
         {
@@ -38,7 +47,7 @@ namespace Clock
         {
             string[] files = Directory.GetFiles(directory, format);
             for (int i = 0; i < files.Length; i++)
-            { 
+            {
                 files[i] = files[i].Split('\\').Last();
             }
             return files;
@@ -48,6 +57,7 @@ namespace Clock
         private void buttonOK_Click(object sender, EventArgs e)
         {
             this.Font = labelExample.Font;
+            FontFileName = comboBoxFont.SelectedItem.ToString();
         }
 
         private void ChooseFont_Load(object sender, EventArgs e)
@@ -63,7 +73,7 @@ namespace Clock
         {
             PrivateFontCollection pfc = new PrivateFontCollection();
             pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
-            labelExample.Font = new Font (pfc.Families[0], (int)numericUpDownFontSize.Value);
+            labelExample.Font = new Font(pfc.Families[0], (int)numericUpDownFontSize.Value);
         }
 
         private void numericUpDownFontSize_ValueChanged(object sender, EventArgs e)
