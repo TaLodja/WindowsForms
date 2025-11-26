@@ -22,10 +22,10 @@ namespace Clock
         public MainForm()
         {
             InitializeComponent();
-            //SetVisibility(false);
             backgroundDialog = new ColorDialog();
             foregroundDialog = new ColorDialog();
             fontDialog = new ChooseFont();
+            SetVisibility(false);
             LoadSettingsApp();
             this.Location = new Point
                 (
@@ -66,8 +66,8 @@ namespace Clock
             sw.WriteLine($"{tsmiTopmost.Checked}");
             sw.WriteLine($"{tsmiShowDate.Checked}");
             sw.WriteLine($"{tsmiShowWeekday.Checked}");
-            sw.WriteLine($"{tsmiShowControls.Checked}");
-            sw.WriteLine($"{tsmiShowConsole.Checked}");
+            //sw.WriteLine($"{tsmiShowControls.Checked}");
+            //sw.WriteLine($"{tsmiShowConsole.Checked}");
             sw.WriteLine($"{fontDialog.FontFileName}");
             sw.WriteLine($"{(int)labelTime.Font.Size}");
             sw.WriteLine($"{labelTime.ForeColor.ToArgb()}");
@@ -78,14 +78,15 @@ namespace Clock
         void LoadSettingsApp()
         {
             string pathApp = $"{Application.ExecutablePath}\\..\\..\\..\\Settings.ini";
-            if (new FileInfo(pathApp).Length != 0)
+            FileInfo fInfo = new FileInfo( pathApp );
+            if (fInfo.Length != 0 || fInfo.Exists)
             {
                 StreamReader sr = new StreamReader(pathApp);
                 tsmiTopmost.Checked = bool.Parse(sr.ReadLine());
                 tsmiShowDate.Checked = bool.Parse(sr.ReadLine());
                 tsmiShowWeekday.Checked = bool.Parse(sr.ReadLine());
-                tsmiShowControls.Checked = bool.Parse(sr.ReadLine());
-                tsmiShowConsole.Checked = bool.Parse(sr.ReadLine());
+                //tsmiShowControls.Checked = bool.Parse(sr.ReadLine());
+                //tsmiShowConsole.Checked = bool.Parse(sr.ReadLine());
                 string fontName = sr.ReadLine();
                 int fontSize = Convert.ToInt32(sr.ReadLine());
                 labelTime.ForeColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
