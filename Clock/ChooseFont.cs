@@ -62,7 +62,7 @@ namespace Clock
 
         private void ChooseFont_Load(object sender, EventArgs e)
         {
-            //LoadFonts();
+            Console.WriteLine(Application.ExecutablePath);
         }
 
         private void comboBoxFont_SelectedIndexChanged(object sender, EventArgs e)

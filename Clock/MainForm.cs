@@ -19,12 +19,14 @@ namespace Clock
         ColorDialog backgroundDialog;
         ColorDialog foregroundDialog;
         ChooseFont fontDialog;
+        AlarmList alarmList;
         public MainForm()
         {
             InitializeComponent();
             backgroundDialog = new ColorDialog();
             foregroundDialog = new ColorDialog();
             fontDialog = new ChooseFont();
+            alarmList = new AlarmList();
             SetVisibility(false);
             LoadSettingsApp();
             this.Location = new Point
@@ -178,6 +180,13 @@ namespace Clock
                 MessageBox.Show("Ключ сохранен", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else regKey().DeleteValue("Clock", false);
+        }
+
+        private void tsmiAlarms_Click(object sender, EventArgs e)
+        {
+            alarmList.StartPosition = FormStartPosition.Manual;
+            alarmList.Location = new Point(this.Location.X - alarmList.Width, this.Location.Y);
+            alarmList.ShowDialog();
         }
     }
 }

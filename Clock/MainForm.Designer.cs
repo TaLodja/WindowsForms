@@ -43,6 +43,8 @@
             this.tsmiColors = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiForegroundColor = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBackgroundColor = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiAlarms = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAutostart = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -52,6 +54,7 @@
             this.checkBoxShowWeekday = new System.Windows.Forms.CheckBox();
             this.buttonHideControls = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,12 +83,14 @@
             this.toolStripSeparator2,
             this.tsmiChooseFont,
             this.tsmiColors,
+            this.toolStripSeparator5,
+            this.tsmiAlarms,
             this.toolStripSeparator3,
             this.tsmiAutostart,
             this.toolStripSeparator4,
             this.tsmiQuit});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 226);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 276);
             // 
             // tsmiTopmost
             // 
@@ -167,6 +172,18 @@
             this.tsmiBackgroundColor.Text = "Background color";
             this.tsmiBackgroundColor.Click += new System.EventHandler(this.tsmiBackgroundColor_Click);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(201, 6);
+            // 
+            // tsmiAlarms
+            // 
+            this.tsmiAlarms.Name = "tsmiAlarms";
+            this.tsmiAlarms.Size = new System.Drawing.Size(204, 22);
+            this.tsmiAlarms.Text = "Alarm Clock";
+            this.tsmiAlarms.Click += new System.EventHandler(this.tsmiAlarms_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -239,6 +256,10 @@
             this.notifyIcon.Visible = true;
             this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -284,6 +305,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiAutostart;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem tsmiShowConsole;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAlarms;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 
