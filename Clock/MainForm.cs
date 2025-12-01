@@ -27,13 +27,14 @@ namespace Clock
             backgroundDialog = new ColorDialog();
             foregroundDialog = new ColorDialog();
             fontDialog = new ChooseFont();
-            alarms = new AlarmsForm();
+            alarms = new AlarmsForm(this);
             LoadSettingsApp();
             this.Location = new Point
                 (
                     Screen.PrimaryScreen.Bounds.Width - this.labelTime.Width - 150,
                     50
                 );
+            tsmiTopmost.Checked = this.TopMost = true;
             tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
 
@@ -49,6 +50,7 @@ namespace Clock
                 labelTime.Text += $"\n{DateTime.Now.ToString("yyyy.MM.dd")}";   //MM - Month
             if (checkBoxShowWeekday.Checked)
                 labelTime.Text += $"\n{DateTime.Now.DayOfWeek}";
+            notifyIcon.Text = labelTime.Text;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) => tsmiShowDate.Checked = checkBoxShowDate.Checked;

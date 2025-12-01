@@ -69,7 +69,9 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.lbAlarmList);
             this.Name = "AlarmsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "AlarmsForm";
+            this.Load += new System.EventHandler(this.AlarmsForm_Load);
             this.ResumeLayout(false);
 
         }

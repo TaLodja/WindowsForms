@@ -12,15 +12,28 @@ namespace Clock
 {
     public partial class AlarmsForm : Form
     {
+        Form parent;
         public AlarmsForm()
         {
             InitializeComponent();
         }
+        public AlarmsForm(Form parent):this()
+        {
+            this.parent = parent;
+            this.StartPosition = FormStartPosition.Manual;
+        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            AddAlarmForm addAlarm = new AddAlarmForm();
+            AddAlarmForm addAlarm = new AddAlarmForm(this);
             addAlarm.ShowDialog();
+        }
+
+        private void AlarmsForm_Load(object sender, EventArgs e)
+        {
+            this.Location = new Point(parent.Location.X - 80, parent.Location.Y + 150);
+            this.TopMost = true;
+            this.TopMost = false;
         }
     }
 }
