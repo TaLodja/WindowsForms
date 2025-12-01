@@ -31,6 +31,7 @@
             this.cbUseDate = new System.Windows.Forms.CheckBox();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.dtpTime = new System.Windows.Forms.DateTimePicker();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // cbUseDate
@@ -60,14 +61,36 @@
             this.dtpTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpTime.Location = new System.Drawing.Point(183, 49);
             this.dtpTime.Name = "dtpTime";
+            this.dtpTime.ShowUpDown = true;
             this.dtpTime.Size = new System.Drawing.Size(200, 31);
             this.dtpTime.TabIndex = 2;
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.CheckOnClick = true;
+            this.checkedListBox1.ColumnWidth = 48;
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.IntegralHeight = false;
+            this.checkedListBox1.Items.AddRange(new object[] {
+            "Пн",
+            "Вт",
+            "Ср",
+            "Чт",
+            "Пт",
+            "Сб",
+            "Вс"});
+            this.checkedListBox1.Location = new System.Drawing.Point(13, 87);
+            this.checkedListBox1.MultiColumn = true;
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(370, 19);
+            this.checkedListBox1.TabIndex = 3;
             // 
             // AddAlarmForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(394, 269);
+            this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.dtpTime);
             this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.cbUseDate);
@@ -83,5 +106,6 @@
         private System.Windows.Forms.CheckBox cbUseDate;
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.DateTimePicker dtpTime;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

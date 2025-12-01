@@ -248,6 +248,7 @@
             this.tsmiAlarms.Name = "tsmiAlarms";
             this.tsmiAlarms.Size = new System.Drawing.Size(204, 22);
             this.tsmiAlarms.Text = "Alarms";
+            this.tsmiAlarms.Click += new System.EventHandler(this.tsmiAlarms_Click);
             // 
             // toolStripSeparator5
             // 
