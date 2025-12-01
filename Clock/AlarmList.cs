@@ -12,35 +12,28 @@ namespace Clock
 {
     public partial class AlarmList : Form
     {
-        //AlarmClock alarmClock;
-        AddAlarm alarmAdd;
-        OpenFileDialog openFile;
-        public ListViewItem newAlarm;
+        AlarmClock alarmClock;
+        public string settingsAlarm;
         public AlarmList()
         {
             InitializeComponent();
-            //alarmClock = new AlarmClock();
-            alarmAdd = new AddAlarm();
-            openFile = new OpenFileDialog();
+            alarmClock = new AlarmClock();
         }
         private void buttonAddAlarm_Click(object sender, EventArgs e)
         {
-            alarmAdd.StartPosition = FormStartPosition.Manual;
-            alarmAdd.Location = new Point(this.Location.X-200, this.Location.Y+25);
-            alarmAdd.ShowDialog();
-            //alarmClock.ShowDialog();
-            //if (alarmClock.ShowDialog() == DialogResult.OK)
-            //{
-            //    string settingsAlarm = $"{alarmClock.alarmTime};{alarmClock.alarmRepeat}";
-            //    newAlarm = new ListViewItem(settingsAlarm);
-            //    //newAlarm.Text = settingsAlarm;
-            //    //listView.Items.Add(newAlarm);
-            //}
+            alarmClock.StartPosition = FormStartPosition.Manual;
+            alarmClock.Location = new Point(this.Location.X-200, this.Location.Y+25);
+            alarmClock.ShowDialog();
+            if (alarmClock.ShowDialog() == DialogResult.OK)
+            {
+                string settingsAlarm = $"{alarmClock.alarmTime};{alarmClock.alarmRepeat}";
+                listBoxAlarm.Items.Add(settingsAlarm);
+            }
         }
 
         private void buttonDelAlarm_Click(object sender, EventArgs e)
         {
-            //listView.Items.Remove(newAlarm);
+            listBoxAlarm.Items.Remove(settingsAlarm);
         }
     }
 }

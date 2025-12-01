@@ -39,7 +39,7 @@ namespace Clock
         private void buttonOK_Click(object sender, EventArgs e)
         {
             //SetAlarmTime();
-            
+
             alarmTime = $"{TimeForm(numericUpDownHours)}:{TimeForm(numericUpDownMinutes)}:00";
             FillCheckWeekDayBox();
             //DellCheckWeekDayBox();
@@ -54,7 +54,7 @@ namespace Clock
         {
                 alarmRepeat = checkedListBoxRepeat.CheckedItems[0].ToString();
                 for (int i = 1; i < checkedListBoxRepeat.CheckedItems.Count; i++)
-                    alarmRepeat += $",{checkedListBoxRepeat.CheckedItems[i]}";
+                    alarmRepeat += $",{checkedListBoxRepeat.SelectedItems[i]}";
         }
 
         private void buttonLoadMelody_Click(object sender, EventArgs e)

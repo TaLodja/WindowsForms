@@ -8,11 +8,9 @@ namespace Clock
 {
     internal class Alarm
     {
-        public DateTime Date { get; set; }
-        public DateTime Time { get; set; }
-        public Week Weekdays { get; set; }
-        public string Filename { get; set; }
-        public string Message { get; set; }
+        public string alarmTime { get; set; }
+        public string alarmRepeat { get; set; }
+        public string melodyFileName { get; set; }
         public Alarm()
         {
 
