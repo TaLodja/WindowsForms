@@ -15,12 +15,20 @@ namespace Clock
     public partial class ChooseFont : Form
     {
         new public Font Font {  get; set; }
+        public string FontFileName { get; set; }
         public ChooseFont()
         {
             InitializeComponent();
             LoadFonts();
             comboBoxFont.SelectedIndex = 0;
             //numericUpDownFontSize.Value = 32;
+        }
+        public ChooseFont(string fontName, int fontSize) : this()
+        {
+            comboBoxFont.SelectedIndex = comboBoxFont.Items.IndexOf(fontName);
+            numericUpDownFontSize.Value = fontSize;
+            Font = labelExample.Font;
+            FontFileName = fontName;
         }
         void LoadFonts()
         {

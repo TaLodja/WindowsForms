@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing.Text;
+using Microsoft.Win32;
 
 namespace Clock
 {
@@ -25,11 +26,13 @@ namespace Clock
             backgroundDialog = new ColorDialog();
             foregroundDialog = new ColorDialog();
             fontDialog = new ChooseFont();
+            LoadSettingsApp();
             this.Location = new Point
                 (
                     Screen.PrimaryScreen.Bounds.Width - this.labelTime.Width - 150,
                     50
                 );
+            tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
         }
 
         private void timer_Tick(object sender, EventArgs e)         //Обработчик событий
@@ -56,6 +59,49 @@ namespace Clock
             this.TransparencyKey = visible ? Color.Empty : this.BackColor;
             this.ShowInTaskbar = visible;
         }
+        void SaveSettingsApp()
+        {
+            string pathApp = $"{Application.ExecutablePath}\\..\\..\\..\\Settings.ini";
+            StreamWriter sw = new StreamWriter(pathApp);
+            sw.WriteLine($"{tsmiTopmost.Checked}");
+            sw.WriteLine($"{tsmiShowDate.Checked}");
+            sw.WriteLine($"{tsmiShowWeekday.Checked}");
+            //sw.WriteLine($"{tsmiShowControls.Checked}");
+            //sw.WriteLine($"{tsmiShowConsole.Checked}");
+            sw.WriteLine($"{fontDialog.FontFileName}");
+            sw.WriteLine($"{(int)labelTime.Font.Size}");
+            sw.WriteLine($"{labelTime.ForeColor.ToArgb()}");
+            sw.WriteLine($"{labelTime.BackColor.ToArgb()}");
+            sw.WriteLine($"{tsmiAutostart.Checked}");
+            sw.Close();
+        }
+        void LoadSettingsApp()
+        {
+            string pathApp = $"{Application.ExecutablePath}\\..\\..\\..\\Settings.ini";
+            FileInfo fInfo = new FileInfo(pathApp);
+            if (fInfo.Length != 0 || fInfo.Exists)
+            {
+                StreamReader sr = new StreamReader(pathApp);
+                tsmiTopmost.Checked = bool.Parse(sr.ReadLine());
+                tsmiShowDate.Checked = bool.Parse(sr.ReadLine());
+                tsmiShowWeekday.Checked = bool.Parse(sr.ReadLine());
+                //tsmiShowControls.Checked = bool.Parse(sr.ReadLine());
+                //tsmiShowConsole.Checked = bool.Parse(sr.ReadLine());
+                string fontName = sr.ReadLine();
+                int fontSize = Convert.ToInt32(sr.ReadLine());
+                labelTime.ForeColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+                labelTime.BackColor = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+                tsmiAutostart.Checked = bool.Parse(sr.ReadLine());
+                sr.Close();
+                checkBoxShowDate.Checked = tsmiShowDate.Checked;
+                checkBoxShowWeekday.Checked = tsmiShowWeekday.Checked;
+                this.TopMost = tsmiTopmost.Checked;
+                SetVisibility(tsmiShowControls.Checked);
+                fontDialog = new ChooseFont(fontName, fontSize);
+                labelTime.Font = fontDialog.Font;
+            }
+            else return;
+        }
         private void buttonHideControls_Click(object sender, EventArgs e) =>
             SetVisibility(tsmiShowControls.Checked = false);
 
@@ -68,7 +114,11 @@ namespace Clock
             this.TopMost = false;
         }
 
-        private void tsmiQuit_Click(object sender, EventArgs e) => this.Close();
+        private void tsmiQuit_Click(object sender, EventArgs e)
+        {
+            SaveSettingsApp();
+            this.Close();
+        }
 
         private void tsmiTopmost_Click(object sender, EventArgs e) =>
             this.TopMost = tsmiTopmost.Checked;
@@ -116,6 +166,18 @@ namespace Clock
         {
             bool console = (sender as ToolStripMenuItem).Checked ? AllocConsole() : FreeConsole();
         }
-
+        private RegistryKey regKey()
+        {
+            return Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        }
+        private void tsmiAutostart_Click(object sender, EventArgs e)
+        {
+            if (tsmiAutostart.Checked)
+            {
+                regKey().SetValue("Clock", Application.ExecutablePath.ToString());
+                MessageBox.Show("Ключ сохранен", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else regKey().DeleteValue("Clock", false);
+        }
     }
 }
