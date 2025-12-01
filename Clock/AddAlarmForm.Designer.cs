@@ -90,6 +90,7 @@
             this.clbWeekDays.Name = "clbWeekDays";
             this.clbWeekDays.Size = new System.Drawing.Size(370, 23);
             this.clbWeekDays.TabIndex = 3;
+            this.clbWeekDays.MouseUp += new System.Windows.Forms.MouseEventHandler(this.clbWeekDays_MouseUp);
             // 
             // btnFile
             // 
@@ -112,6 +113,7 @@
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
@@ -148,6 +150,7 @@
             this.Controls.Add(this.cbUseDate);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AddAlarmForm";
+            this.ShowInTaskbar = false;
             this.Text = "AddAlarmForm";
             this.Load += new System.EventHandler(this.AddAlarmForm_Load);
             this.ResumeLayout(false);

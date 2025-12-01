@@ -13,6 +13,7 @@ namespace Clock
     public partial class AddAlarmForm : Form
     {
         Form parent;
+        public Alarm Alarm { get; private set; }
         OpenFileDialog fileDialog;
         public AddAlarmForm()
         {
@@ -20,8 +21,9 @@ namespace Clock
             dtpDate.Enabled = cbUseDate.Checked;
             fileDialog = new OpenFileDialog();
             fileDialog.Filter = "All files |*.mp3;*.flacc|MP-3 file (*.mp3)|*.mp3|Flac files (*.flacc)|*.flacc";
+            Alarm = new Alarm();
         }
-        public AddAlarmForm(Form parent):this()
+        public AddAlarmForm(Form parent) : this()
         {
             this.parent = parent;
             this.StartPosition = FormStartPosition.Manual;
@@ -29,6 +31,7 @@ namespace Clock
         private void cbUseDate_CheckedChanged(object sender, EventArgs e)
         {
             dtpDate.Enabled = cbUseDate.Checked;
+            clbWeekDays.Enabled = !cbUseDate.Checked;
         }
 
         private void btnFile_Click(object sender, EventArgs e)
@@ -40,6 +43,38 @@ namespace Clock
         private void AddAlarmForm_Load(object sender, EventArgs e)
         {
             this.Location = new Point(parent.Location.X - 50, parent.Location.Y + 50);
+        }
+
+        private void clbWeekDays_MouseUp(object sender, MouseEventArgs e)
+        {
+            //MessageBox.Show("Weekdays");
+            string weekdays = "";
+            string indexes = "";
+            for (int i = 0; i < (sender as CheckedListBox).CheckedItems.Count; i++)
+            {
+                weekdays += (sender as CheckedListBox).CheckedItems[i] + "\t";
+                indexes += (sender as CheckedListBox).CheckedIndices[i] + "\t";
+                //Console.Write((sender as CheckedListBox).SelectedIndices[i] + "\t");
+            }
+            //MessageBox.Show($"{clbWeekDays.ToString()}");
+            //MessageBox.Show($"{weekdays}\n{indexes}");
+        }
+        public int[] WeekdaysToArray()
+        {
+            List<int> days = new List<int>();
+            foreach(int i in clbWeekDays.CheckedIndices)
+            {
+                days.Add(i);
+            }
+            return days.ToArray();
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            Alarm.Date = dtpDate.Value;
+            Alarm.Time = dtpTime.Value;
+            Alarm.Filename = lblFile.Text;
+            Alarm.WeekdaysFromArray(WeekdaysToArray());
         }
     }
 }
