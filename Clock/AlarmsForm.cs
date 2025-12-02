@@ -38,5 +38,8 @@ namespace Clock
             this.TopMost = true;
             this.TopMost = false;
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)=>
+            lbAlarmList.Items.Remove(lbAlarmList.SelectedItem);
     }
 }
