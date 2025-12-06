@@ -156,13 +156,9 @@ namespace Clock
         }
         Alarm FindNextAlarm()
         {
-            //Alarm[] actualAlarm;
-            //for (int i=0; i<alarms.AlarmsList.Items.Count; i++)
-            //{
-            //    string AlarmDateTime = $"{(alarms.AlarmsList.Items[i] as Alarm).Date} {(alarms.AlarmsList.Items[i] as Alarm).Time}";
-            //    actualAlarm[i] = alarms.AlarmsList.Items.Cast<Alarm>().Where(a => a.Time < DateTime.Now)
-            //}
-            return alarms.AlarmsList.Items.Cast<Alarm>().ToArray().Min();
+            Alarm[] actualAlarm = alarms.AlarmsList.Items.Cast<Alarm>().ToArray();
+            return actualAlarm.Min();
+            //return alarms.AlarmsList.Items.Cast<Alarm>().ToArray().Min();
         }
         bool CompareDates(DateTime date1, DateTime date2)
         {
