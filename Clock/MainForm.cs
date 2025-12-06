@@ -22,6 +22,7 @@ namespace Clock
         ChooseFont fontDialog;
         AlarmsForm alarms;
         Alarm nextAlarm;
+        int nextAlarm_index;
         public MainForm()
         {
             InitializeComponent();
@@ -32,6 +33,7 @@ namespace Clock
             fontDialog = new ChooseFont();
             alarms = new AlarmsForm(this);
             LoadSettingsApp();
+            //LoadAlarms();
             this.Location = new Point
                 (
                     Screen.PrimaryScreen.Bounds.Width - this.labelTime.Width - 150,
@@ -59,14 +61,15 @@ namespace Clock
             nextAlarm = FindNextAlarm();
             if (
                 nextAlarm != null &&
-                nextAlarm.Time.Hour ==DateTime.Now.Hour &&
-                nextAlarm.Time.Minute == DateTime.Now.Minute &&
-                nextAlarm.Time.Second == DateTime.Now.Second
+                (nextAlarm.Date == DateTime.MinValue ? nextAlarm.ContainsDay(DateTime.Now.DayOfWeek) : CompareDates(nextAlarm.Date, DateTime.Now)) &&
+                CompareTimes(nextAlarm.Time, DateTime.Now)
                 )
             {
                 System.Threading.Thread.Sleep(1000);
                 PlayAlarm();
+                //if (nextAlarm.Date != DateTime.MinValue) alarms.AlarmsList.Items.Remove(alarms.AlarmsList.Items[FindNextAlarmIndex()]);
             }
+            if (alarms.AlarmsList.Items.Count > 0) nextAlarm = FindNextAlarm();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) => tsmiShowDate.Checked = checkBoxShowDate.Checked;
@@ -122,69 +125,53 @@ namespace Clock
             }
             else return;
         }
-        /*void LoadAlarms()
+        void LoadAlarms()
         {
             string filename = $"{Application.ExecutablePath}\\..\\..\\..\\AlarmList.ini";
             FileInfo fInfo = new FileInfo(filename);
             if (fInfo.Length != 0 || fInfo.Exists)
             {
                 StreamReader sr = new StreamReader(filename);
-                int i = 0, j = 0;
-                string[] lines = null;
-                while (sr.EndOfStream)
-                {
-                    lines[i++] = sr.ReadLine();
-                }
-                sr.Close();
-                for (int n = 0; n < alarm.Length / 4; n++)
-                {
-                    alarm[n] = new Alarm
-                        (
-                        new DateTime(Convert.ToInt64(lines[j])),
-                        new DateTime(Convert.ToInt64(lines[j])),
-                        lines[j + 2],
-                        lines[j + 3]
-                        );
-                    //alarm[n].Date = new DateTime(Convert.ToInt64(lines[j]));
-                    //alarm[n].Time = DateTime.Parse(lines[j + 1]);
-                    //alarm[n].Weekdays = lines[j + 2];
-                    //alarm[n].Filename = lines[j + 3];
-                    //alarm[n].Date = DateTime.Parse(lines[j]);
-                    //alarm[n].Time = DateTime.Parse(lines[j + 1]);
-                    //alarm[n].Weekdays = lines[j + 2];
-                    //alarm[n].Filename = lines[j + 3];
-                    j += 4;
-                }
-                //try
+                //while (!sr.EndOfStream)
                 //{
-                //    StreamReader sr = new StreamReader(filename);
-                //    int i = 0, j = 0;
-                //    string[] lines = null;
-                //    while (sr.EndOfStream)
-                //    {
-                //        lines[i++] = sr.ReadLine();
-                //    }
-                //    sr.Close();
-                //    for (int n=0; n<alarm.Length/4; n++)
-                //    {
-                //        alarm[n].Date = DateTime.Parse(lines[j]);
-                //        alarm[n].Time = DateTime.Parse(lines[j + 1]);
-                //        alarm[n].Weekdays = lines[j + 2];
-                //        alarm[n].Filename = lines[j + 3];
-                //        j += 4;
-                //    }
+                string sr_alarm = sr.ReadLine();
+                string[] sr_alarmItems = sr_alarm.Split(';');
+                Alarm ararmLoaded = new Alarm
+                    (
+                    (sr_alarmItems[0] == "Repeat") ? new DateTime() : new DateTime(Convert.ToInt32(sr_alarmItems[0])),
+                    new DateTime(Convert.ToInt32(sr_alarmItems[1])),
+                    Convert.ToByte(sr_alarmItems[2]),
+                    sr_alarmItems[3]
+                    );
+                MessageBox.Show("Будильники загружены");
+                alarms.AlarmsList.Items.Add(ararmLoaded);
                 //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show("Будильник не найден!");
-                //}
+                //sr.Close();
             }
-            else return;
-        }*/
+            else
+            {
+                MessageBox.Show("Будильники не загружены");
+                return;
+            }
+        }
         Alarm FindNextAlarm()
         {
-            nextAlarm = alarms.Alarms.Items.Cast<Alarm>().ToArray().Min();
-            return nextAlarm;
+            return alarms.AlarmsList.Items.Cast<Alarm>().ToArray().Min();
+            //Alarm[] actualAlarm = alarms.AlarmsList.Items.Cast<Alarm>().Where(a => a.Time < DateTime.Now).ToArray();
+            //return actualAlarm.Min();
+        }
+        bool CompareDates(DateTime date1, DateTime date2)
+        {
+            return date1.Year == date2.Year && date1.Month == date2.Month && date1.Day == date2.Day;
+        }
+        bool CompareTimes(DateTime date1, DateTime date2)
+        {
+            return date1.Hour == date2.Hour && date1.Minute == date2.Minute && date1.Second == date2.Second;
+        }
+        bool CompareAlarms(DateTime date1, DateTime date2)
+        {
+            
+            return (DateTime.Compare(date1, date2) > 0);
         }
         void PlayAlarm()
         {

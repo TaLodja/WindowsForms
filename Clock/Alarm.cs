@@ -13,9 +13,13 @@ namespace Clock
         public DateTime Time { get; set; }
         public byte Weekdays { get; set; }
         public string Filename { get; set; }
-        public Alarm()
+        public Alarm() { }
+        public Alarm(DateTime date, DateTime time, byte weekdays, string filename)
         {
-
+            this.Date = date;
+            this.Time = time;
+            this.Weekdays = weekdays;
+            this.Filename = filename;
         }
         public Alarm(Alarm other)
         {
@@ -39,7 +43,15 @@ namespace Clock
         }
         public override string ToString()
         {
-            return $"{Date.ToString("yyyy.MM.dd")}-{Time.ToString("hh:mm:ss tt")}-{Weekdays}-{Filename.Split('\\').Last()}";
+            string setDate = (this.Date != DateTime.MinValue) ? Date.ToString("yyyy.MM.dd") : "Repeat";
+            return $"{setDate};{Time.ToString("hh:mm:ss tt")};{Weekdays};{Filename.Split('\\').Last()}";
+        }
+        public bool ContainsDay(DayOfWeek day)
+        {
+            int i_day = (int)day;
+            i_day -= 1;
+            if (i_day == -1) i_day = 6;
+            return ((Weekdays & (1 << i_day)) !=0);
         }
     }
 }

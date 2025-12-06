@@ -44,6 +44,10 @@ namespace Clock
         private void AddAlarmForm_Load(object sender, EventArgs e)
         {
             this.Location = new Point(parent.Location.X - 50, parent.Location.Y + 50);
+            //if (Alarm.Date != DateTime.MinValue)
+            //{
+            //    dtpDate.Value = Alarm.Date;
+            //}
         }
 
         private void clbWeekDays_MouseUp(object sender, MouseEventArgs e)

@@ -14,7 +14,7 @@ namespace Clock
     public partial class AlarmsForm : Form
     {
         Form parent;
-        public ListBox Alarms { get => lbAlarmList; }
+        public ListBox AlarmsList { get => lbAlarmList; }
         public AlarmsForm()
         {
             InitializeComponent();

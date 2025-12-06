@@ -41,6 +41,8 @@
             // cbUseDate
             // 
             this.cbUseDate.AutoSize = true;
+            this.cbUseDate.Checked = true;
+            this.cbUseDate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbUseDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cbUseDate.Location = new System.Drawing.Point(13, 13);
             this.cbUseDate.Name = "cbUseDate";
@@ -74,6 +76,7 @@
             // 
             this.clbWeekDays.CheckOnClick = true;
             this.clbWeekDays.ColumnWidth = 52;
+            this.clbWeekDays.Enabled = false;
             this.clbWeekDays.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.clbWeekDays.FormattingEnabled = true;
             this.clbWeekDays.IntegralHeight = false;
