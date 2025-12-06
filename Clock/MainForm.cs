@@ -132,8 +132,8 @@ namespace Clock
             if (fInfo.Length != 0 || fInfo.Exists)
             {
                 StreamReader sr = new StreamReader(filename);
-                //while (!sr.EndOfStream)
-                //{
+                while (!sr.EndOfStream)
+                {
                 string sr_alarm = sr.ReadLine();
                 string[] sr_alarmItems = sr_alarm.Split(';');
                 Alarm ararmLoaded = new Alarm
@@ -145,8 +145,8 @@ namespace Clock
                     );
                 MessageBox.Show("Будильники загружены");
                 alarms.AlarmsList.Items.Add(ararmLoaded);
-                //}
-                //sr.Close();
+                }
+                sr.Close();
             }
             else
             {
@@ -156,9 +156,13 @@ namespace Clock
         }
         Alarm FindNextAlarm()
         {
+            //Alarm[] actualAlarm;
+            //for (int i=0; i<alarms.AlarmsList.Items.Count; i++)
+            //{
+            //    string AlarmDateTime = $"{(alarms.AlarmsList.Items[i] as Alarm).Date} {(alarms.AlarmsList.Items[i] as Alarm).Time}";
+            //    actualAlarm[i] = alarms.AlarmsList.Items.Cast<Alarm>().Where(a => a.Time < DateTime.Now)
+            //}
             return alarms.AlarmsList.Items.Cast<Alarm>().ToArray().Min();
-            //Alarm[] actualAlarm = alarms.AlarmsList.Items.Cast<Alarm>().Where(a => a.Time < DateTime.Now).ToArray();
-            //return actualAlarm.Min();
         }
         bool CompareDates(DateTime date1, DateTime date2)
         {
