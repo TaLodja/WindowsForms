@@ -44,6 +44,8 @@
             this.tsmiForegroundColor = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBackgroundColor = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiAlarms = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiAutostart = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,9 +54,10 @@
             this.checkBoxShowWeekday = new System.Windows.Forms.CheckBox();
             this.buttonHideControls = new System.Windows.Forms.Button();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.tsmiAlarms = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.axWindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
+            this.btnAlarmsClose = new System.Windows.Forms.Button();
             this.contextMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).BeginInit();
             this.SuspendLayout();
             // 
             // labelTime
@@ -89,7 +92,7 @@
             this.toolStripSeparator4,
             this.tsmiQuit});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(205, 276);
+            this.contextMenuStrip.Size = new System.Drawing.Size(205, 254);
             // 
             // tsmiTopmost
             // 
@@ -176,6 +179,18 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(201, 6);
             // 
+            // tsmiAlarms
+            // 
+            this.tsmiAlarms.Name = "tsmiAlarms";
+            this.tsmiAlarms.Size = new System.Drawing.Size(204, 22);
+            this.tsmiAlarms.Text = "Alarms";
+            this.tsmiAlarms.Click += new System.EventHandler(this.tsmiAlarms_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(201, 6);
+            // 
             // tsmiAutostart
             // 
             this.tsmiAutostart.CheckOnClick = true;
@@ -243,23 +258,34 @@
             this.notifyIcon.Visible = true;
             this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
             // 
-            // tsmiAlarms
+            // axWindowsMediaPlayer
             // 
-            this.tsmiAlarms.Name = "tsmiAlarms";
-            this.tsmiAlarms.Size = new System.Drawing.Size(204, 22);
-            this.tsmiAlarms.Text = "Alarms";
-            this.tsmiAlarms.Click += new System.EventHandler(this.tsmiAlarms_Click);
+            this.axWindowsMediaPlayer.Enabled = true;
+            this.axWindowsMediaPlayer.Location = new System.Drawing.Point(228, 12);
+            this.axWindowsMediaPlayer.Name = "axWindowsMediaPlayer";
+            this.axWindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer.OcxState")));
+            this.axWindowsMediaPlayer.Size = new System.Drawing.Size(75, 48);
+            this.axWindowsMediaPlayer.TabIndex = 4;
             // 
-            // toolStripSeparator5
+            // btnAlarmsClose
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(201, 6);
+            this.btnAlarmsClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnAlarmsClose.Location = new System.Drawing.Point(12, 150);
+            this.btnAlarmsClose.Name = "btnAlarmsClose";
+            this.btnAlarmsClose.Size = new System.Drawing.Size(291, 43);
+            this.btnAlarmsClose.TabIndex = 5;
+            this.btnAlarmsClose.Text = "Выключить будильник";
+            this.btnAlarmsClose.UseVisualStyleBackColor = true;
+            this.btnAlarmsClose.Visible = false;
+            this.btnAlarmsClose.Click += new System.EventHandler(this.btnAlarmClose_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(330, 417);
+            this.Controls.Add(this.btnAlarmsClose);
+            this.Controls.Add(this.axWindowsMediaPlayer);
             this.Controls.Add(this.buttonHideControls);
             this.Controls.Add(this.checkBoxShowWeekday);
             this.Controls.Add(this.checkBoxShowDate);
@@ -271,6 +297,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Clock_SPU_411";
             this.contextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -302,6 +329,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiShowConsole;
         private System.Windows.Forms.ToolStripMenuItem tsmiAlarms;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer;
+        private System.Windows.Forms.Button btnAlarmsClose;
     }
 }
 

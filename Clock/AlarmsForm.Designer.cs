@@ -74,6 +74,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "AlarmsForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AlarmsForm_FormClosed);
             this.Load += new System.EventHandler(this.AlarmsForm_Load);
             this.ResumeLayout(false);
 

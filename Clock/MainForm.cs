@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing.Text;
 using Microsoft.Win32;
+using System.Globalization;
 
 namespace Clock
 {
@@ -20,10 +21,12 @@ namespace Clock
         ColorDialog foregroundDialog;
         ChooseFont fontDialog;
         AlarmsForm alarms;
+        Alarm nextAlarm;
         public MainForm()
         {
             InitializeComponent();
             SetVisibility(false);
+            axWindowsMediaPlayer.Visible = false;
             backgroundDialog = new ColorDialog();
             foregroundDialog = new ColorDialog();
             fontDialog = new ChooseFont();
@@ -36,6 +39,7 @@ namespace Clock
                 );
             tsmiTopmost.Checked = this.TopMost = true;
             tsmiAutostart.Checked = (regKey().GetValue("Clock") != null);
+            axWindowsMediaPlayer.Visible = false;
         }
 
         private void timer_Tick(object sender, EventArgs e)         //Обработчик событий
@@ -49,8 +53,20 @@ namespace Clock
             if (checkBoxShowDate.Checked)
                 labelTime.Text += $"\n{DateTime.Now.ToString("yyyy.MM.dd")}";   //MM - Month
             if (checkBoxShowWeekday.Checked)
+                //labelTime.Text += $"\n{DateTime.Now.ToString("ddd", new CultureInfo("ru-RU"))}";
                 labelTime.Text += $"\n{DateTime.Now.DayOfWeek}";
             notifyIcon.Text = labelTime.Text;
+            nextAlarm = FindNextAlarm();
+            if (
+                nextAlarm != null &&
+                nextAlarm.Time.Hour ==DateTime.Now.Hour &&
+                nextAlarm.Time.Minute == DateTime.Now.Minute &&
+                nextAlarm.Time.Second == DateTime.Now.Second
+                )
+            {
+                System.Threading.Thread.Sleep(1000);
+                PlayAlarm();
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e) => tsmiShowDate.Checked = checkBoxShowDate.Checked;
@@ -105,6 +121,78 @@ namespace Clock
                 labelTime.Font = fontDialog.Font;
             }
             else return;
+        }
+        /*void LoadAlarms()
+        {
+            string filename = $"{Application.ExecutablePath}\\..\\..\\..\\AlarmList.ini";
+            FileInfo fInfo = new FileInfo(filename);
+            if (fInfo.Length != 0 || fInfo.Exists)
+            {
+                StreamReader sr = new StreamReader(filename);
+                int i = 0, j = 0;
+                string[] lines = null;
+                while (sr.EndOfStream)
+                {
+                    lines[i++] = sr.ReadLine();
+                }
+                sr.Close();
+                for (int n = 0; n < alarm.Length / 4; n++)
+                {
+                    alarm[n] = new Alarm
+                        (
+                        new DateTime(Convert.ToInt64(lines[j])),
+                        new DateTime(Convert.ToInt64(lines[j])),
+                        lines[j + 2],
+                        lines[j + 3]
+                        );
+                    //alarm[n].Date = new DateTime(Convert.ToInt64(lines[j]));
+                    //alarm[n].Time = DateTime.Parse(lines[j + 1]);
+                    //alarm[n].Weekdays = lines[j + 2];
+                    //alarm[n].Filename = lines[j + 3];
+                    //alarm[n].Date = DateTime.Parse(lines[j]);
+                    //alarm[n].Time = DateTime.Parse(lines[j + 1]);
+                    //alarm[n].Weekdays = lines[j + 2];
+                    //alarm[n].Filename = lines[j + 3];
+                    j += 4;
+                }
+                //try
+                //{
+                //    StreamReader sr = new StreamReader(filename);
+                //    int i = 0, j = 0;
+                //    string[] lines = null;
+                //    while (sr.EndOfStream)
+                //    {
+                //        lines[i++] = sr.ReadLine();
+                //    }
+                //    sr.Close();
+                //    for (int n=0; n<alarm.Length/4; n++)
+                //    {
+                //        alarm[n].Date = DateTime.Parse(lines[j]);
+                //        alarm[n].Time = DateTime.Parse(lines[j + 1]);
+                //        alarm[n].Weekdays = lines[j + 2];
+                //        alarm[n].Filename = lines[j + 3];
+                //        j += 4;
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    MessageBox.Show("Будильник не найден!");
+                //}
+            }
+            else return;
+        }*/
+        Alarm FindNextAlarm()
+        {
+            nextAlarm = alarms.Alarms.Items.Cast<Alarm>().ToArray().Min();
+            return nextAlarm;
+        }
+        void PlayAlarm()
+        {
+            axWindowsMediaPlayer.URL = nextAlarm.Filename;
+            axWindowsMediaPlayer.settings.volume = 32;
+            axWindowsMediaPlayer.Ctlcontrols.play();
+            axWindowsMediaPlayer.Visible = true;
+            btnAlarmsClose.Visible = true;
         }
         private void buttonHideControls_Click(object sender, EventArgs e) =>
             SetVisibility(tsmiShowControls.Checked = false);
@@ -168,7 +256,8 @@ namespace Clock
 
         private void tsmiShowConsole_CheckedChanged(object sender, EventArgs e)
         {
-            bool console = (sender as ToolStripMenuItem).Checked ? AllocConsole() : FreeConsole();
+            bool console = tsmiShowConsole.Checked ? AllocConsole() : FreeConsole();
+            //bool console = (sender as ToolStripMenuItem).Checked ? AllocConsole() : FreeConsole();
         }
         private RegistryKey regKey()
         {
@@ -187,6 +276,13 @@ namespace Clock
         private void tsmiAlarms_Click(object sender, EventArgs e)
         {
             alarms.ShowDialog();
+        }
+
+        private void btnAlarmClose_Click(object sender, EventArgs e)
+        {
+            axWindowsMediaPlayer.Ctlcontrols.stop();
+            btnAlarmsClose.Visible = false;
+            axWindowsMediaPlayer.Visible = false;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,7 +63,7 @@ namespace Clock
         public int[] WeekdaysToArray()
         {
             List<int> days = new List<int>();
-            foreach(int i in clbWeekDays.CheckedIndices)
+            foreach (int i in clbWeekDays.CheckedIndices)
             {
                 days.Add(i);
             }
@@ -71,10 +72,11 @@ namespace Clock
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            Alarm.Date = dtpDate.Value;
+            Alarm.Date = dtpDate.Enabled ? dtpDate.Value : DateTime.MinValue;
             Alarm.Time = dtpTime.Value;
-            Alarm.Filename = lblFile.Text;
             Alarm.WeekdaysFromArray(WeekdaysToArray());
+            Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Sounds");
+            Alarm.Filename = (lblFile.Text!="File") ?  lblFile.Text : $"{Directory.GetCurrentDirectory()}\\Nickelback-Savin_Me.mp3";
         }
     }
 }
